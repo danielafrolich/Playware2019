@@ -11,7 +11,7 @@ import static com.livelife.motolibrary.AntData.LED_COLOR_RED;
 
 public class ColorRace extends Game {
 
-    MotoConnection connection;
+    MotoConnection connection = MotoConnection.getInstance();
     MotoSound sound = MotoSound.getInstance();
 
     ColorRace(){

@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         connection=MotoConnection.getInstance();
         connection.startMotoConnection(MainActivity.this);
         connection.saveRfFrequency(16); //(Group No.)*10+6
@@ -86,14 +87,13 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
     @Override
     protected void onPause() {
         super.onPause();
-        connection.stopMotoConnection();
         connection.unregisterListener(MainActivity.this);
     }
     @Override
     protected void onRestart() {
         super.onRestart();
-        connection.startMotoConnection(MainActivity.this);
-        //connection.registerListener(MainActivity.this);
+        //connection.startMotoConnection(MainActivity.this);
+        connection.registerListener(MainActivity.this);
     }
     @Override
     protected void onDestroy() {
