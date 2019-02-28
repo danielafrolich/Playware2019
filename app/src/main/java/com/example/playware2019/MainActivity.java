@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                statusTextView.setText(i + "connected tiles");
+                statusTextView.setText(i + " connected tiles");
             }
         });
     }
