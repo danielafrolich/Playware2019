@@ -33,12 +33,12 @@ public class Concentration extends Game {
 
     }
 
-    public boolean isOdd(int num) {
-        boolean odd = true;
-        if(num % 2 == 0){
-            odd = false;
+    boolean isOdd(int num) {
+        if (num % 2 == 0) {
+            return false;
+        } else {
+            return true;
         }
-        return odd;
     }
 
     @Override
@@ -142,6 +142,6 @@ public class Concentration extends Game {
     public void onGameEnd() {
         super.onGameEnd();
         connection.setAllTilesBlink(4, LED_COLOR_RED);
-    };
+        sound.playStop();
+    }
 }
-
