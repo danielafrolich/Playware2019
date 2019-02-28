@@ -1,7 +1,6 @@
 package com.example.playware2019;
 
 import android.os.Handler;
-import android.util.Log;
 
 import com.livelife.motolibrary.AntData;
 import com.livelife.motolibrary.Game;
@@ -11,6 +10,7 @@ import com.livelife.motolibrary.MotoSound;
 
 import java.util.Random;
 
+import static com.livelife.motolibrary.AntData.LED_COLOR_BLUE;
 import static com.livelife.motolibrary.AntData.LED_COLOR_OFF;
 import static com.livelife.motolibrary.AntData.LED_COLOR_RED;
 
@@ -25,8 +25,9 @@ public class GameHitTheTarget extends Game {
     GameHitTheTarget(){
         setName("Hit the target");
         setDescription("A nice game");
+        setMaxPlayers(2);
 
-        GameType gt = new GameType(1, GameType.GAME_TYPE_SCORE, 10, "Hit target 10 times", 1);
+        GameType gt = new GameType(1, GameType.GAME_TYPE_SCORE, 10, "Hit target 10 times", 2);
         addGameType(gt);
     }
 
@@ -70,10 +71,17 @@ public class GameHitTheTarget extends Game {
         if (event == AntData.EVENT_PRESS){
             int tileId = AntData.getId(message);
             // int color = AntData.getColorFromPress(message);
-            if (tileId == currentTile) { // could also be color == LED_COLOR_RED
+            if (tileId == LED_COLOR_RED) { // could also be color == LED_COLOR_RED
                 timeInterval -= timeStep;
                 incrementPlayerScore(1, 0);
-            } else {
+            }
+
+            if (tileId == LED_COLOR_BLUE) {
+                timeInterval -= timeStep;
+                incrementPlayerScore(1, 1);
+            }
+
+            else {
                 timeInterval += timeStep;
             }
 
@@ -81,10 +89,13 @@ public class GameHitTheTarget extends Game {
                 timeInterval = timeStep;
             }
 
-            int currentScore = getPlayerScore()[0];
-            Log.i("onGameUpdate","Current Score: " + currentScore);
-            if (currentScore == selectedGameType.getGoal()){
-                stopGame();
+            int numPlayers = selectedGameType.getNumPlayers();
+
+//            Log.i("onGameUpdate","Current Score: " + currentScore);
+            for (int i = 0; i < numPlayers; i++) {
+                if (getPlayerScore()[i] == selectedGameType.getGoal()) {
+                    stopGame();
+                }
             }
 
         }
