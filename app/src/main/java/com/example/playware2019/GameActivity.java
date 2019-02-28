@@ -19,6 +19,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
 
     ColorRace colorRace;
     GameHitTheTarget hitTarget;
+    Concentration concentration;
     LinearLayout gameTypeContainer;
 
     @Override
@@ -28,6 +29,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
 
         connection.registerListener(GameActivity.this);
         connection.setAllTilesToInit();
+
         colorRace = new ColorRace();
         gameTypeContainer = findViewById(R .id.gameTypeContainer);
         for (final GameType gt: colorRace.getGameTypes()){
@@ -47,16 +49,32 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
         }
 
         hitTarget = new GameHitTheTarget();
-        for (final GameType gt: hitTarget.getGameTypes()){
+        for (final GameType gt: hitTarget.getGameTypes()) {
             Button b = new Button(this);
-            b.setOnClickListener(new View.OnClickListener(){
+            b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     hitTarget.selectedGameType = gt;
                     hitTarget.setOnGameEventListener(GameActivity.this);
                     sound.playStart();
                     hitTarget.startGame();
+                }
+            });
+            b.setText(gt.getName());
+            gameTypeContainer.addView(b);
 
+        }
+
+        concentration = new Concentration();
+        for (final GameType gt: concentration.getGameTypes()){
+            Button b = new Button(this);
+            b.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    concentration.selectedGameType = gt;
+                    concentration.setOnGameEventListener(GameActivity.this);
+                    sound.playStart();
+                    concentration.startGame();
                 }
             });
             b.setText(gt.getName());
@@ -69,6 +87,7 @@ public class GameActivity extends AppCompatActivity implements OnAntEventListene
     public void onMessageReceived(byte[] bytes, long l) {
         colorRace.addEvent(bytes);
         hitTarget.addEvent(bytes);
+        concentration.addEvent(bytes);
     }
 
     @Override
