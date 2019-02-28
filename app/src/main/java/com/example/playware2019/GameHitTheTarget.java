@@ -1,6 +1,7 @@
 package com.example.playware2019;
 
 import android.os.Handler;
+import android.util.Log;
 
 import com.livelife.motolibrary.AntData;
 import com.livelife.motolibrary.Game;
@@ -73,33 +74,23 @@ public class GameHitTheTarget extends Game {
         super.onGameUpdate(message);
         int event = AntData.getCommand(message);
         if (event == AntData.EVENT_PRESS){
-            int tileId = AntData.getId(message);
-            // int color = AntData.getColorFromPress(message);
-            if (tileId == LED_COLOR_RED) { // could also be color == LED_COLOR_RED
+            //int tileId = AntData.getId(message);
+            int color = AntData.getColorFromPress(message);
+            if (color != LED_COLOR_OFF) { // could also be color == LED_COLOR_RED
                 timeInterval -= timeStep;
-                incrementPlayerScore(1, 0);
-            }
-
-            if (tileId == LED_COLOR_BLUE) {
-                timeInterval -= timeStep;
-                incrementPlayerScore(1, 1);
-            }
-
-            else {
+                int curPlayer = color - 1;
+                incrementPlayerScore(1, curPlayer);
+                int currentScore = getPlayerScore()[curPlayer];
+                Log.i("onGameUpdate","Player " + curPlayer + " Current Score: " + currentScore);
+                if (currentScore == selectedGameType.getGoal()) {
+                    stopGame();
+                }
+            } else {
                 timeInterval += timeStep;
             }
 
             if (timeInterval <= timeStep) {
                 timeInterval = timeStep;
-            }
-
-            int numPlayers = selectedGameType.getNumPlayers();
-
-//            Log.i("onGameUpdate","Current Score: " + currentScore);
-            for (int i = 0; i < numPlayers; i++) {
-                if (getPlayerScore()[i] == selectedGameType.getGoal()) {
-                    stopGame();
-                }
             }
 
         }
