@@ -11,6 +11,7 @@ import com.livelife.motolibrary.MotoSound;
 
 import java.util.Random;
 
+import static com.livelife.motolibrary.AntData.LED_COLOR_BLUE;
 import static com.livelife.motolibrary.AntData.LED_COLOR_OFF;
 import static com.livelife.motolibrary.AntData.LED_COLOR_RED;
 
@@ -25,8 +26,9 @@ public class GameHitTheTarget extends Game {
     GameHitTheTarget(){
         setName("Hit the target");
         setDescription("A nice game");
+        setMaxPlayers(2);
 
-        GameType gt = new GameType(1, GameType.GAME_TYPE_SCORE, 10, "Hit target 10 times", 1);
+        GameType gt = new GameType(1, GameType.GAME_TYPE_SCORE, 10, "Hit target 10 times", 2);
         addGameType(gt);
     }
 
@@ -36,9 +38,13 @@ public class GameHitTheTarget extends Game {
         @Override
         public void run() {
             int tile = getRandomTile();
+            Random random = new Random();
+            int numPlayers = selectedGameType.getNumPlayers();
+            int curColor = random.nextInt(numPlayers) + 1;
+
             for (int t: connection.connectedTiles) {
                 if (tile == t) {
-                    connection.setTileColor(LED_COLOR_RED, tile);
+                    connection.setTileColor(curColor, tile);
                 } else {
                     connection.setTileColor(LED_COLOR_OFF, t);
                 }
