@@ -3,6 +3,7 @@ package com.example.playware2019;
 import android.os.Handler;
 import android.util.Log;
 
+import com.livelife.motolibrary.AntData;
 import com.livelife.motolibrary.Game;
 import com.livelife.motolibrary.GameType;
 import com.livelife.motolibrary.MotoConnection;
@@ -15,10 +16,11 @@ import static com.livelife.motolibrary.AntData.LED_COLOR_RED;
 
 public class GameHitTheTarget extends Game {
 
-    // MotoSound sound = MotoSound.getInstance();
+    MotoSound sound = MotoSound.getInstance();
     MotoConnection connection = MotoConnection.getInstance();
     int currentTile;
     int timeInterval = 1000;
+    int timeStep = 100;
 
     GameHitTheTarget(){
         setName("Hit the target");
@@ -64,11 +66,37 @@ public class GameHitTheTarget extends Game {
     @Override
     public void onGameUpdate(byte[] message) {
         super.onGameUpdate(message);
+        int event = AntData.getCommand(message);
+        if (event == AntData.EVENT_PRESS){
+            int tileId = AntData.getId(message);
+            // int color = AntData.getColorFromPress(message);
+            if (tileId == currentTile) { // could also be color == LED_COLOR_RED
+                timeInterval -= timeStep;
+                incrementPlayerScore(1, 0);
+            } else {
+                timeInterval += timeStep;
+            }
+
+            if (timeInterval <= timeStep) {
+                timeInterval = timeStep;
+            }
+
+            int currentScore = getPlayerScore()[0];
+            Log.i("onGameUpdate","Current Score: " + currentScore);
+            if (currentScore == selectedGameType.getGoal()){
+                stopGame();
+            }
+
+        }
+
     }
 
     @Override
     public void onGameEnd() {
         super.onGameEnd();
+        handler.removeCallbacksAndMessages(null);
+        connection.setAllTilesBlink(4, LED_COLOR_RED);
+
     }
 
     int getRandomTile() {
@@ -77,7 +105,7 @@ public class GameHitTheTarget extends Game {
             Random random = new Random();
             int randomTile = random.nextInt(connection.connectedTiles.size()) + 1;
             if (randomTile != currentTile) {
-                Log.i("getRandomTile","Found random " + randomTile);
+//                Log.i("getRandomTile","Found random " + randomTile);
                 return randomTile;
             }
         }
