@@ -18,10 +18,12 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
     MotoConnection connection;
     MotoSound sound;
     Button paringButton;
+    Button firmwareButton;
     Button randColor;
     Button startGameButton;
     TextView statusTextView;
     boolean isParing = false;
+    boolean isUpdating = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,22 @@ public class MainActivity extends AppCompatActivity implements OnAntEventListene
                     paringButton.setText("Start Paring");
                 }
                 isParing = !isParing;
+            }
+        });
+
+        firmwareButton = findViewById(R.id.firmwareButton);
+        firmwareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isUpdating){
+                    connection.updateFirmwareStart();
+                    firmwareButton.setText("Stop");
+                    isUpdating = true;
+                }else{
+                    connection.updateFirmwareStop();
+                    firmwareButton.setText("Update firmware");
+                    isUpdating = false;
+                }
             }
         });
 

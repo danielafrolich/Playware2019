@@ -10,32 +10,27 @@
         android:id="@+id/paringButton"
         android:layout_width="142dp"
         android:layout_height="49dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="228dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="135dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="134dp"
         android:backgroundTint="@color/colorPrimary"
         android:text="Start Pairing"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/startGameButton" />
 
     <Button
         android:id="@+id/randColor"
         android:layout_width="158dp"
         android:layout_height="57dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="127dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="126dp"
         android:backgroundTint="@android:color/holo_blue_bright"
         android:text="Random Color"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/paringButton"
-        app:layout_constraintVertical_bias="0.281" />
+        app:layout_constraintTop_toBottomOf="@+id/paringButton" />
 
     <TextView
         android:id="@+id/statusTextView"
@@ -64,5 +59,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/statusTextView" />
+
+    <Button
+        android:id="@+id/firmwareButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="129dp"
+        android:text="Update Firmware"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/randColor" />
 
 </android.support.constraint.ConstraintLayout>
